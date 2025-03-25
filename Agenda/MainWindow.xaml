@@ -5,8 +5,78 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Agenda"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="10,5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#824DF0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
+        <!-- Grid à 2 colonnes : Navigation gauche + contenu -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <!-- Barre de navigation -->
+            <ColumnDefinition Width="*"/>
+            <!-- Contenu principal -->
+        </Grid.ColumnDefinitions>
 
+        <!-- NAVIGATION LATERALE -->
+        <StackPanel Background="#6C3CE6" Grid.Column="0" VerticalAlignment="Stretch">
+            <!-- Logo rond -->
+            <Ellipse Width="80" Height="80" Margin="20" Fill="White"/>
+
+            <!-- Titre -->
+            <TextBlock Text="REYMOND Nolan" 
+                       Foreground="White" 
+                       FontSize="20" 
+                       FontWeight="Bold" 
+                       Margin="20,10,20,0"/>
+
+            <TextBlock Text="Members, Sallanches"
+                       Foreground="White" 
+                       FontSize="12" 
+                       Margin="20,0,20,30"/>
+
+            <!-- Menu -->
+            <Button Content="Dashboard" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click" />
+            <Button Content="Events" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click"/>
+            <Button Content="Contacts" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click"/>
+            <Button Content="Task" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click"/>
+            <Button Content="Messages" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click"/>
+
+            <!-- Spacer -->
+            <StackPanel VerticalAlignment="Bottom" Margin="20,40,20,20">
+                <Button Content="Logout" Style="{StaticResource NavButtonStyle}" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- CONTENU PRINCIPAL (à compléter plus tard) -->
+        <ContentControl x:Name="MainContent" Grid.Column="1" Background="#F4F6FA"/>
+        <!-- Ici on mettra la page de contact, dashboard, etc -->
+    
     </Grid>
 </Window>
