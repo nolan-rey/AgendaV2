@@ -63,14 +63,14 @@
 
             <!-- Menu -->
             <Button Content="Dashboard" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click" />
-            <Button Content="Events" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click"/>
-            <Button Content="Contacts" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click"/>
-            <Button Content="Task" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click"/>
-            <Button Content="Messages" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click"/>
+            <Button Content="Events" Style="{StaticResource NavButtonStyle}" Click="Events_Click"/>
+            <Button Content="Contacts" Style="{StaticResource NavButtonStyle}" Click="Contacts_Click"/>
+            <Button Content="Task" Style="{StaticResource NavButtonStyle}" Click="Tasks_Click"/>
+            <Button Content="Messages" Style="{StaticResource NavButtonStyle}" Click="Messages_Click"/>
 
             <!-- Spacer -->
             <StackPanel VerticalAlignment="Bottom" Margin="20,40,20,20">
-                <Button Content="Logout" Style="{StaticResource NavButtonStyle}" />
+                <Button Content="Logout" Style="{StaticResource NavButtonStyle}" Click="Logout_Click" />
             </StackPanel>
         </StackPanel>
 
