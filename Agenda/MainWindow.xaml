@@ -7,35 +7,41 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
-    <Window.Resources>
-        <Style x:Key="NavButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="10,5"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                            CornerRadius="8">
-                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#824DF0"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-    <Grid>
+	<Window.Resources>
+		<SolidColorBrush x:Key="ActiveNavBrush" Color="#6C3CE6"/>
+		<Style x:Key="NavButtonStyle" TargetType="Button">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontSize" Value="15"/>
+			<Setter Property="FontWeight" Value="SemiBold"/>
+			<Setter Property="Padding" Value="12,8"/>
+			<Setter Property="Margin" Value="10,5,10,5"/>
+			<Setter Property="HorizontalContentAlignment" Value="Left"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="BorderBrush" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Border x:Name="border"
+								Background="{TemplateBinding Background}"
+								CornerRadius="10"
+								Padding="{TemplateBinding Padding}">
+							<ContentPresenter VerticalAlignment="Center" />
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="border" Property="Background" Value="#814FE8"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+	</Window.Resources>
+
+	<Grid>
         <!-- Grid à 2 colonnes : Navigation gauche + contenu -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
@@ -61,17 +67,48 @@
                        FontSize="12" 
                        Margin="20,0,20,30"/>
 
-            <!-- Menu -->
-            <Button Content="Dashboard" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click" />
-            <Button Content="Events" Style="{StaticResource NavButtonStyle}" Click="Events_Click"/>
-            <Button Content="Contacts" Style="{StaticResource NavButtonStyle}" Click="Contacts_Click"/>
-            <Button Content="Task" Style="{StaticResource NavButtonStyle}" Click="Tasks_Click"/>
-            <Button Content="Messages" Style="{StaticResource NavButtonStyle}" Click="Messages_Click"/>
+			<!-- Menu -->
+			<Button x:Name="BtnDashboard" Style="{StaticResource NavButtonStyle}" Click="Dashboard_Click">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="18" Margin="0,0,10,0"/>
+					<TextBlock Text="Dashboard"/>
+				</StackPanel>
+			</Button>
 
-            <!-- Spacer -->
-            <StackPanel VerticalAlignment="Bottom" Margin="20,40,20,20">
-                <Button Content="Logout" Style="{StaticResource NavButtonStyle}" Click="Logout_Click" />
-            </StackPanel>
+			<Button x:Name="BtnEvents" Style="{StaticResource NavButtonStyle}" Click="Events_Click">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="18" Margin="0,0,10,0"/>
+					<TextBlock Text="Events"/>
+				</StackPanel>
+			</Button>
+
+			<Button x:Name="BtnContacts" Style="{StaticResource NavButtonStyle}" Click="Contacts_Click">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="18" Margin="0,0,10,0"/>
+					<TextBlock Text="Contacts"/>
+				</StackPanel>
+			</Button>
+
+			<Button x:Name="BtnTasks" Style="{StaticResource NavButtonStyle}" Click="Tasks_Click">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="18" Margin="0,0,10,0"/>
+					<TextBlock Text="Task"/>
+				</StackPanel>
+			</Button>
+
+			<Button x:Name="BtnMessages" Style="{StaticResource NavButtonStyle}" Click="Messages_Click">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="18" Margin="0,0,10,0"/>
+					<TextBlock Text="Messages"/>
+				</StackPanel>
+			</Button>
+
+			<Button Style="{StaticResource NavButtonStyle}" Click="Logout_Click">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="18" Margin="0,0,10,0"/>
+					<TextBlock Text="Logout"/>
+				</StackPanel>
+			</Button>
         </StackPanel>
 
         <!-- CONTENU PRINCIPAL (à compléter plus tard) -->

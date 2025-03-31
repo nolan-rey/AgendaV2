@@ -1,0 +1,63 @@
+﻿<Window x:Class="Agenda.Views.ContactForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Formulaire Contact" Height="600" Width="450"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Background="#F4F6FA">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="30">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                <!-- Titre -->
+                <TextBlock Text="Formulaire Contact" 
+                           FontSize="24" 
+                           FontWeight="Bold"
+                           Foreground="#2B2D42"
+                           Margin="0,0,0,30"
+                           HorizontalAlignment="Center"/>
+
+                <!-- Champs stylés -->
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="Prénom" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="FirstNameBox" Height="35" Padding="10" Background="White" BorderBrush="#DDD" BorderThickness="1"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="Nom" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="LastNameBox" Height="35" Padding="10" Background="White" BorderBrush="#DDD" BorderThickness="1"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="Email" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="EmailBox" Height="35" Padding="10" Background="White" BorderBrush="#DDD" BorderThickness="1"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="Téléphone" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="PhoneBox" Height="35" Padding="10" Background="White" BorderBrush="#DDD" BorderThickness="1"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Text="Adresse" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="AddressBox" Height="35" Padding="10" Background="White" BorderBrush="#DDD" BorderThickness="1"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,25">
+                    <TextBlock Text="Date de naissance" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <DatePicker x:Name="BirthDatePicker" Height="35" Background="White" BorderBrush="#DDD" BorderThickness="1"/>
+                </StackPanel>
+
+                <!-- Boutons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Annuler" Width="100" Height="35" Margin="0,0,10,0"
+                            Click="Cancel_Click"
+                            Background="White" Foreground="#2B2D42" BorderBrush="#CCC" BorderThickness="1" Cursor="Hand"/>
+
+                    <Button Content="Enregistrer" Width="120" Height="35"
+                            Click="Save_Click"
+                            Background="#6C3CE6" Foreground="White" BorderThickness="0" FontWeight="SemiBold" Cursor="Hand"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>
