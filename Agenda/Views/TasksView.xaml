@@ -5,8 +5,257 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Agenda.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="#F4F6FA">
+
+    <UserControl.Resources>
+        <!-- Animation d’apparition -->
+        <Style x:Key="FadeInItemStyle" TargetType="ListViewItem">
+            <Setter Property="Opacity" Value="0"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform Y="10"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             From="0" To="1" Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)"
+                                             From="10" To="0" Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style moderne pour ComboBox -->
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <!-- Fond et bordure -->
+                            <Border x:Name="Border"
+                            Background="White"
+                            BorderBrush="#DDD"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="6"
+                            SnapsToDevicePixels="True">
+                                <DockPanel>
+                                    <ContentPresenter HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Margin="4,0,0,0"/>
+                                    <Path x:Name="Arrow"
+                                  Fill="#555"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Center"
+                                  Margin="4"
+                                  Width="10" Height="6"
+                                  Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                </DockPanel>
+                            </Border>
+
+                            <!-- Popup -->
+                            <Popup x:Name="PART_Popup"
+                           Placement="Bottom"
+                           IsOpen="{TemplateBinding IsDropDownOpen}"
+                           AllowsTransparency="True"
+                           Focusable="False"
+                           PopupAnimation="Slide">
+                                <Grid MaxHeight="200">
+                                    <Border Margin="1"
+                                    Background="White"
+                                    BorderBrush="#DDD"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    SnapsToDevicePixels="True">
+                                        <ScrollViewer>
+                                            <StackPanel IsItemsHost="True" />
+                                        </ScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#EEE"/>
+                                <Setter TargetName="Arrow" Property="Fill" Value="#AAA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <StackPanel>
+            <!-- Titre -->
+            <TextBlock Text="Tâches" FontSize="28" FontWeight="Bold" Margin="0,0,0,20"/>
+
+            <!-- Barre du haut -->
+            <DockPanel Margin="0,0,0,20">
+                <!-- Recherche -->
+                <Border Width="250" Height="38" CornerRadius="8" Background="White"
+                        BorderBrush="#DDD" BorderThickness="1" Margin="0,0,10,0" DockPanel.Dock="Left">
+                    <Grid>
+                        <TextBlock Text="🔍" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#999"/>
+                        <TextBox x:Name="SearchBox"
+                                 Margin="30,0,30,0"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 FontSize="14"
+                                 VerticalContentAlignment="Center"
+                                 TextChanged="SearchBox_TextChanged"/>
+                        <TextBlock x:Name="SearchPlaceholder"
+                                   Text="Rechercher une tâche..."
+                                   FontStyle="Italic"
+                                   Foreground="#999"
+                                   Margin="32,0,30,0"
+                                   VerticalAlignment="Center"
+                                   IsHitTestVisible="False"
+                                   Visibility="Visible"/>
+                        <Button x:Name="ClearSearchButton"
+                                Content="✖"
+                                FontSize="12"
+                                Width="20" Height="20"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0,0,10,0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Foreground="#999"
+                                Click="ClearSearchButton_Click"
+                                Visibility="Collapsed"/>
+                    </Grid>
+                </Border>
+
+                <!-- ComboBox tri moderne -->
+                <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="10,0,0,0">
+                    <TextBlock Text="Trier par :" FontWeight="SemiBold" FontSize="12" Foreground="#444" Margin="0,0,0,3"/>
+                    <ComboBox x:Name="SortComboBox"
+                              Width="180"
+                              Style="{StaticResource ModernComboBox}"
+                              FontSize="13"
+                              SelectionChanged="SortComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Date d'échéance" IsSelected="True"/>
+                        <ComboBoxItem Content="Date d'ajout"/>
+                        <ComboBoxItem Content="Nom (A-Z)"/>
+                        <ComboBoxItem Content="Nom (Z-A)"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Bouton ajouter -->
+                <Button Content="+ Ajouter une tâche"
+                        Width="180" Height="38"
+                        HorizontalAlignment="Right"
+                        Margin="10,0,0,0"
+                        Click="AddTask_Click"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Background="#6C3CE6"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        FontSize="14"
+                        BorderBrush="Transparent"
+                        Padding="10"
+                        DockPanel.Dock="Right"/>
+            </DockPanel>
+
+            <!-- Liste À faire -->
+            <TextBlock Text="À faire" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+            <ListView x:Name="TasksTodoListView"
+                      ItemContainerStyle="{StaticResource FadeInItemStyle}"
+                      BorderThickness="0"
+                      Background="Transparent"
+                      Margin="0,0,0,20">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="White" CornerRadius="10" Margin="0,0,0,10" Padding="10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Column="0" Margin="5"
+                                          IsChecked="{Binding IsCompleted}"
+                                          Checked="CheckBox_CheckedChanged"
+                                          Unchecked="CheckBox_CheckedChanged"
+                                          VerticalAlignment="Center"/>
+
+                                <StackPanel Grid.Column="1" Margin="10,0">
+                                    <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding DueDate, StringFormat='Échéance : {0:dd/MM/yyyy}'}"
+                                               FontSize="12" Foreground="#666"/>
+                                </StackPanel>
+
+                                <Button Grid.Column="2" Content="✏️" Width="30" Margin="5,0"
+                                        ToolTip="Modifier" Click="EditTask_Click" Cursor="Hand"
+                                        Background="Transparent" BorderBrush="Transparent"/>
+
+                                <Button Grid.Column="3" Content="🗑️" Width="30" Margin="5,0"
+                                        ToolTip="Supprimer" Click="DeleteTask_Click"
+                                        Background="#E63946" Foreground="White" BorderBrush="#E63946"
+                                        Cursor="Hand"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Liste Terminées -->
+            <TextBlock Text="Terminées" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+            <ListView x:Name="TasksDoneListView"
+                      ItemContainerStyle="{StaticResource FadeInItemStyle}"
+                      BorderThickness="0"
+                      Background="Transparent">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#F0F0F0" CornerRadius="10" Margin="0,0,0,10" Padding="10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Column="0" Margin="5"
+                                          IsChecked="{Binding IsCompleted}"
+                                          Checked="CheckBox_CheckedChanged"
+                                          Unchecked="CheckBox_CheckedChanged"
+                                          VerticalAlignment="Center"/>
+
+                                <StackPanel Grid.Column="1" Margin="10,0">
+                                    <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold"
+                                               TextDecorations="Strikethrough" Foreground="#666"/>
+                                    <TextBlock Text="{Binding DueDate, StringFormat='Échéance : {0:dd/MM/yyyy}'}"
+                                               FontSize="12" Foreground="#888"/>
+                                </StackPanel>
+
+                                <Button Grid.Column="2" Content="🗑️" Width="30" Margin="5,0"
+                                        ToolTip="Supprimer" Click="DeleteTask_Click"
+                                        Background="#E63946" Foreground="White" BorderBrush="#E63946"
+                                        Cursor="Hand"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
     </Grid>
 </UserControl>

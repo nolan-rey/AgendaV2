@@ -9,9 +9,6 @@ using Agenda.Models;
 
 namespace Agenda.Views
 {
-    /// <summary>
-    /// Logique d'interaction pour ContactsView.xaml
-    /// </summary>
     public partial class ContactsView : UserControl
     {
         private List<Contact> allContacts;
@@ -24,12 +21,12 @@ namespace Agenda.Views
 
         private void ContactsView_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadContacts(); // ✅ utilise cette méthode pour charger tous les contacts
+            LoadContacts();
         }
 
         private void LoadContacts()
         {
-            allContacts = ContactDAO.GetAll(); // ✅ met à jour la liste globale
+            allContacts = ContactDAO.GetAll();
             ContactsListView.ItemsSource = allContacts;
         }
 
@@ -39,7 +36,7 @@ namespace Agenda.Views
             if (form.ShowDialog() == true)
             {
                 ContactDAO.Add(form.Contact);
-                LoadContacts(); // ✅ recharge bien les contacts
+                LoadContacts();
             }
         }
 
@@ -50,7 +47,7 @@ namespace Agenda.Views
             if (form.ShowDialog() == true)
             {
                 ContactDAO.Update(form.Contact);
-                LoadContacts(); // ✅ recharge après modification
+                LoadContacts();
             }
         }
 
@@ -60,7 +57,7 @@ namespace Agenda.Views
             if (MessageBox.Show($"Supprimer {contact.FirstName} {contact.LastName} ?", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 ContactDAO.Delete(contact.Id);
-                LoadContacts(); // ✅ recharge après suppression
+                LoadContacts();
             }
         }
 
@@ -71,7 +68,6 @@ namespace Agenda.Views
 
             string keyword = SearchBox.Text.Trim().ToLower();
 
-            // Placeholder & clear button
             SearchPlaceholder.Visibility = string.IsNullOrWhiteSpace(keyword) ? Visibility.Visible : Visibility.Collapsed;
             ClearSearchButton.Visibility = string.IsNullOrWhiteSpace(keyword) ? Visibility.Collapsed : Visibility.Visible;
 
@@ -86,7 +82,7 @@ namespace Agenda.Views
 
         private void ClearSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            SearchBox.Text = string.Empty; // 🔄 cela va déclencher SearchBox_TextChanged
+            SearchBox.Text = string.Empty;
         }
 
         private void Expander_Expanded(object sender, RoutedEventArgs e)
