@@ -10,9 +10,9 @@ namespace Agenda.Views
 {
     public partial class TasksView : UserControl
     {
-        private List<Todo> allTasks = new(); // Toujours initialisé
+        private List<Todo> allTasks = new(); // Initialisé pour éviter les null
         private string currentSort = "Date d'échéance"; // Tri par défaut
-        private bool isUiReady = false; // Pour éviter d'appeler RefreshLists avant que les éléments soient prêts
+        private bool isUiReady = false; // Protection au chargement
 
         public TasksView()
         {
@@ -29,12 +29,12 @@ namespace Agenda.Views
         private void LoadTasks()
         {
             allTasks = TodoDAO.GetAll()?.Where(t => t != null).ToList() ?? new List<Todo>();
-            if (isUiReady) RefreshLists();
+            if (isUiReady)
+                RefreshLists();
         }
 
         private void RefreshLists()
         {
-            // ⛔ Sécurise en cas de UI non encore chargée
             if (!isUiReady || TasksTodoListView == null || TasksDoneListView == null)
                 return;
 
@@ -70,13 +70,13 @@ namespace Agenda.Views
                 .ToList();
         }
 
-        private void SortComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SortTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SortComboBox?.SelectedItem is ComboBoxItem selectedItem)
-            {
-                currentSort = selectedItem.Content.ToString();
-                RefreshLists();
-            }
+            if (!isUiReady || SortTabControl.SelectedItem is not TabItem selectedItem)
+                return;
+
+            currentSort = selectedItem.Header.ToString();
+            RefreshLists();
         }
 
         private void AddTask_Click(object sender, RoutedEventArgs e)
