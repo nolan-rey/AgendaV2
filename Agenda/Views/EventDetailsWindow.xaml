@@ -1,0 +1,66 @@
+﻿<Window x:Class="Agenda.Views.EventDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Agenda.Views"
+        mc:Ignorable="d"
+        Title="Détails de l'événement" 
+        Height="280" Width="400"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- En-tête avec titre -->
+        <TextBlock Grid.Row="0" 
+                   Text="Détails de l'événement" 
+                   FontSize="16" 
+                   FontWeight="Bold" 
+                   Margin="0,0,0,10"/>
+
+        <!-- Contenu principal -->
+        <Grid Grid.Row="1">
+            <StackPanel>
+                <!-- Icône et informations de l'événement -->
+                <Grid Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Icône d'information -->
+                    <Ellipse Width="32" Height="32" Fill="#3498db" Margin="0,0,10,0">
+                        <Ellipse.Effect>
+                            <DropShadowEffect ShadowDepth="1" BlurRadius="2" Opacity="0.3"/>
+                        </Ellipse.Effect>
+                    </Ellipse>
+                    <TextBlock Text="i" FontSize="20" FontWeight="Bold" Foreground="White" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    <!-- Informations de l'événement -->
+                    <StackPanel Grid.Column="1">
+                        <TextBlock x:Name="TitreText" Text="Titre: test" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="DateText" Text="Date: 11 avril 2025 15:45 - 16:45" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="DureeText" Text="Durée: 1h00" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="LieuText" Text="Lieu: Non spécifié" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="DescriptionText" Text="Description: Aucune description" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <!-- Bouton OK -->
+        <Button Grid.Row="2" 
+                Content="OK" 
+                Width="80" 
+                Height="25" 
+                HorizontalAlignment="Right" 
+                Click="OkButton_Click"/>
+    </Grid>
+</Window>

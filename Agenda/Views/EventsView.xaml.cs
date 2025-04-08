@@ -288,17 +288,7 @@ namespace Agenda.Views
             grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
-            // Indicateur de couleur
-            var colorIndicator = new Border
-            {
-                Background = evt.Color,
-                Height = 4,
-                CornerRadius = new CornerRadius(2),
-                Margin = new Thickness(0, 0, 0, 8),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Width = double.NaN
-            };
-            grid.Children.Add(colorIndicator);
+            // Suppression de l'indicateur de couleur
 
             // Titre de l'événement
             var title = new TextBlock
