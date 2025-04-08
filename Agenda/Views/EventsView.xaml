@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Agenda.Views"
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1000"
-             Background="#F4F6FA">
+             Background="#F8F9FA"
+             Loaded="EventsView_Loaded">
 
     <UserControl.Resources>
         <!-- Styles pour les boutons -->
@@ -68,22 +69,19 @@
             <Setter Property="Margin" Value="0,5"/>
         </Style>
 
-        <!-- Style pour les TextBox -->
-        <Style x:Key="InputStyle" TargetType="TextBox">
-            <Setter Property="Padding" Value="10,8"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        <!-- Style pour les événements dans la liste -->
+        <Style x:Key="EventCardStyle" TargetType="Border">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="Margin" Value="0,5"/>
-        </Style>
-
-        <!-- Style pour les DatePicker -->
-        <Style x:Key="DatePickerStyle" TargetType="DatePicker">
-            <Setter Property="Padding" Value="10,6"/>
-            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="#E0E0E0"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="4" Opacity="0.1" Color="#000000"/>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
 
@@ -107,18 +105,18 @@
             </StackPanel>
 
             <Button Grid.Column="1" Content="Aujourd'hui" Style="{StaticResource SecondaryButton}" Margin="0,0,10,0" Click="TodayButton_Click"/>
-            <Button Grid.Column="2" Content="+ Nouvel événement" Style="{StaticResource ActionButton}" Click="NewEventButton_Click"/>
+            <Button Grid.Column="2" Content="Actualiser" Style="{StaticResource ActionButton}" Click="RefreshButton_Click"/>
         </Grid>
 
-        <!-- Contenu principal avec calendrier et détails -->
+        <!-- Contenu principal avec calendrier et liste d'événements -->
         <Grid Grid.Row="1" Margin="20,0,20,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="350"/>
             </Grid.ColumnDefinitions>
 
             <!-- Calendrier -->
-            <Border Grid.Column="0" Background="White" CornerRadius="8" Margin="0,0,10,0" Padding="10">
+            <Border Grid.Column="0" Background="White" CornerRadius="8" Margin="0,0,10,0" Padding="15">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -127,7 +125,7 @@
                     </Grid.RowDefinitions>
 
                     <!-- Navigation du mois -->
-                    <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <Grid Grid.Row="0" Margin="0,0,0,15">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -137,7 +135,7 @@
                     </Grid>
 
                     <!-- Jours de la semaine -->
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" Margin="0,0,0,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -163,7 +161,7 @@
                 </Grid>
             </Border>
 
-            <!-- Panneau latéral pour les détails et la création d'événements -->
+            <!-- Liste des événements -->
             <Border Grid.Column="1" Background="White" CornerRadius="8" Padding="15">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -171,83 +169,15 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Titre du panneau -->
-                    <TextBlock Grid.Row="0" x:Name="SidebarTitle" Text="Détails de l'événement" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+                    <!-- Titre de la section -->
+                    <TextBlock Grid.Row="0" Text="Événements à venir" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
 
-                    <!-- Contenu du panneau (détails ou formulaire) -->
+                    <!-- Liste des événements -->
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                        <!-- Panneau de détails d'événement -->
-                        <Grid x:Name="EventDetailsPanel" Visibility="Collapsed">
-                            <StackPanel>
-                                <TextBlock x:Name="EventTitleText" Text="Titre de l'événement" FontSize="20" FontWeight="Bold" TextWrapping="Wrap"/>
-                                <TextBlock x:Name="EventTimeText" Text="10 avril 2025, 14:00 - 15:00" Margin="0,10,0,0" Foreground="#666666"/>
-                                <TextBlock x:Name="EventDurationText" Text="1h00" Margin="0,5,0,0" Foreground="#666666"/>
-
-                                <Separator Margin="0,15"/>
-
-                                <TextBlock Text="Lieu" FontWeight="SemiBold" Margin="0,10,0,5"/>
-                                <TextBlock x:Name="EventLocationText" Text="Aucun lieu spécifié" Foreground="#666666"/>
-
-                                <TextBlock Text="Description" FontWeight="SemiBold" Margin="0,15,0,5"/>
-                                <TextBlock x:Name="EventDescriptionText" Text="Aucune description" TextWrapping="Wrap" Foreground="#666666"/>
-
-                                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                                    <Button Content="Modifier" Style="{StaticResource ActionButton}" Click="EditEvent_Click"/>
-                                    <Button Content="Supprimer" Style="{StaticResource SecondaryButton}" Margin="10,0,0,0" Click="DeleteEvent_Click"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Grid>
-
-                        <!-- Formulaire de création/modification d'événement -->
-                        <Grid x:Name="EventFormPanel" Visibility="Visible">
-                            <StackPanel>
-                                <TextBlock Text="Titre" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                                <TextBox x:Name="EventTitleInput" Style="{StaticResource InputStyle}" Text=""/>
-
-                                <Grid Margin="0,10,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" Margin="0,0,5,0">
-                                        <TextBlock Text="Date de début" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                                        <DatePicker x:Name="StartDatePicker" Style="{StaticResource DatePickerStyle}"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1" Margin="5,0,0,0">
-                                        <TextBlock Text="Heure de début" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                                        <ComboBox x:Name="StartTimePicker" Padding="10,8" Margin="0,5"/>
-                                    </StackPanel>
-                                </Grid>
-
-                                <Grid Margin="0,10,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" Margin="0,0,5,0">
-                                        <TextBlock Text="Date de fin" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                                        <DatePicker x:Name="EndDatePicker" Style="{StaticResource DatePickerStyle}"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1" Margin="5,0,0,0">
-                                        <TextBlock Text="Heure de fin" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                                        <ComboBox x:Name="EndTimePicker" Padding="10,8" Margin="0,5"/>
-                                    </StackPanel>
-                                </Grid>
-
-                                <CheckBox x:Name="AllDayCheckbox" Content="Toute la journée" Margin="0,10,0,0" Checked="AllDayCheckbox_CheckedChanged" Unchecked="AllDayCheckbox_CheckedChanged"/>
-
-                                <TextBlock Text="Lieu" FontWeight="SemiBold" Margin="0,15,0,5"/>
-                                <TextBox x:Name="LocationInput" Style="{StaticResource InputStyle}"/>
-
-                                <TextBlock Text="Description" FontWeight="SemiBold" Margin="0,15,0,5"/>
-                                <TextBox x:Name="DescriptionInput" Style="{StaticResource InputStyle}" Height="100" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
-
-                                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                                    <Button Content="Enregistrer" Style="{StaticResource ActionButton}" Click="SaveEvent_Click"/>
-                                    <Button Content="Annuler" Style="{StaticResource SecondaryButton}" Margin="10,0,0,0" Click="CancelEdit_Click"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Grid>
+                        <StackPanel x:Name="UpcomingEventsPanel">
+                            <!-- Les événements seront ajoutés ici dynamiquement -->
+                            <TextBlock x:Name="NoEventsText" Text="Aucun événement à venir" Foreground="#666666" Visibility="Collapsed"/>
+                        </StackPanel>
                     </ScrollViewer>
                 </Grid>
             </Border>
