@@ -12,7 +12,7 @@ namespace Agenda.Services
         private static readonly HttpClient client = new HttpClient();
 
         // ✅ Remplace par ta clé API et l'adresse du calendrier
-        private const string apiKey = "AIzaSyBX0xMae8aCkvi2jyPo6abafHxi1-ZEQ1g";
+        private const string apiKey = "CLE-API";
         private const string calendarId = "onn74700@gmail.com"; // ou l'ID du calendrier public
 
         public async Task<List<CalendarEvent>> GetPublicEventsAsync()
